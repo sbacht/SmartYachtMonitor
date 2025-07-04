@@ -1,0 +1,40 @@
+version: '3.8'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./model:/app/model
+      - ./api:/app/api
+    depends_on:
+      - db
+  train:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.train
+    volumes:
+      - ./model:/app/model
+      - ./data:/app/data
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: yacht
+      POSTGRES_PASSWORD: yacht
+      POSTGRES_DB: yacht_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  mlflow:
+    image: mlflow/mlflow
+    ports:
+      - "5000:5000"
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+    volumes:
+      - ./mlflow:/mlflow
+volumes:
+  pgdata: 

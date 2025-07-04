@@ -1,0 +1,11 @@
+pandas
+numpy
+scikit-learn
+fastapi
+uvicorn
+joblib
+pydantic
+apache-airflow
+psycopg2-binary
+mlflow 
+six
